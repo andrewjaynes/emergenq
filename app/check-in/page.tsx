@@ -101,7 +101,9 @@ export default function CheckInPage() {
             }}
           >
             {LANGUAGES.map((lang) => (
-              <option key={lang}>{lang}</option>
+              <option key={lang} selected={lang === "English"}>
+  {lang}
+</option>
             ))}
           </select>
         </div>
