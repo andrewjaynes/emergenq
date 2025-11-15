@@ -1,129 +1,202 @@
-// ISO-639-1 language list (all 136 major world languages)
+"use client";
+
+import { useState } from "react";
+
+// FULL LIST OF LANGUAGES
 const LANGUAGES = [
-  "Abkhaz", "Afar", "Afrikaans", "Akan", "Albanian", "Amharic", "Arabic",
-  "Aragonese", "Armenian", "Assamese", "Avaric", "Avestan", "Aymara",
-  "Azerbaijani", "Bambara", "Bashkir", "Basque", "Belarusian", "Bengali",
-  "Bihari", "Bislama", "Bosnian", "Breton", "Bulgarian", "Burmese",
-  "Catalan", "Chamorro", "Chechen", "Chichewa", "Chinese", "Chuvash",
-  "Cornish", "Corsican", "Cree", "Croatian", "Czech", "Danish", "Divehi",
-  "Dutch", "Dzongkha", "English", "Esperanto", "Estonian", "Ewe", "Faroese",
-  "Fijian", "Finnish", "French", "Fula", "Galician", "Georgian", "German",
-  "Greek", "Guarani", "Gujarati", "Haitian Creole", "Hausa", "Hebrew",
-  "Herero", "Hindi", "Hiri Motu", "Hungarian", "Interlingua", "Indonesian",
-  "Interlingue", "Irish", "Igbo", "Inupiaq", "Ido", "Icelandic",
-  "Italian", "Inuktitut", "Japanese", "Javanese", "Kalaallisut", "Kannada",
-  "Kanuri", "Kashmiri", "Kazakh", "Khmer", "Kikuyu", "Kinyarwanda",
-  "Kyrgyz", "Komi", "Kongo", "Korean", "Kurdish", "Kwanyama", "Latin",
-  "Luxembourgish", "Ganda", "Limburgish", "Lingala", "Lao", "Lithuanian",
-  "Luba-Katanga", "Latvian", "Manx", "Macedonian", "Malagasy", "Malay",
-  "Malayalam", "Maltese", "Māori", "Marathi", "Marshallese", "Mongolian",
-  "Nauru", "Navajo", "Northern Ndebele", "Nepali", "Ndonga", "Norwegian",
-  "Norwegian Bokmål", "Norwegian Nynorsk", "Occitan", "Ojibwe", "Old Slavonic",
-  "Oromo", "Oriya", "Ossetian", "Panjabi", "Pali", "Persian", "Polish",
-  "Portuguese", "Pushto", "Quechua", "Romansh", "Romanian", "Russian",
-  "Sanskrit", "Sardinian", "Sindhi", "Northern Sami", "Samoan", "Sango",
-  "Serbian", "Gaelic", "Shona", "Sinhala", "Slovak", "Slovene", "Somali",
-  "Southern Sotho", "Spanish", "Sundanese", "Swahili", "Swati", "Swedish",
-  "Tamil", "Telugu", "Tajik", "Thai", "Tigrinya", "Tibetan", "Turkmen",
-  "Tagalog", "Tswana", "Tonga", "Turkish", "Tsonga", "Tatar", "Twi",
-  "Tahitian", "Uighur", "Ukrainian", "Urdu", "Uzbek", "Venda", "Vietnamese",
-  "Volapük", "Walloon", "Welsh", "Wolof", "Western Frisian", "Xhosa",
-  "Yiddish", "Yoruba", "Zhuang", "Zulu"
+  "English",
+  "Spanish",
+  "Chinese (Mandarin)",
+  "Hindi",
+  "Arabic",
+  "Bengali",
+  "Portuguese",
+  "Russian",
+  "Japanese",
+  "Punjabi",
+  "German",
+  "Javanese",
+  "Wu Chinese",
+  "Korean",
+  "French",
+  "Turkish",
+  "Vietnamese",
+  "Urdu",
+  "Italian",
+  "Persian",
+  "Polish",
+  "Ukrainian",
+  "Dutch",
+  "Thai",
+  "Gujarati",
+  "Tamil",
+  "Yoruba",
+  "Hausa",
+  "Swahili",
+  "Amharic",
+  "Telugu",
+  "Marathi",
+  "Cantonese",
+  "Tagalog",
+  "Romanian",
+  "Serbian",
+  "Czech",
+  "Greek",
+  "Hebrew",
+  "Somali",
+  "Nepali",
+  "Burmese",
+  "Malay",
+  "Indonesian",
+  "Zulu",
+  "Afrikaans",
+  "Armenian",
+  "Albanian",
 ];
 
 export default function CheckInPage() {
+  const [submitted, setSubmitted] = useState(false);
+  const [position, setPosition] = useState<number | null>(null);
+
+  async function handleSubmit(e: any) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+
+    const res = await fetch("/api/check-in", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+
+    const json = await res.json();
+    setSubmitted(true);
+    setPosition(json.queuePosition);
+  }
+
   return (
-    <div style={{ padding: "2rem", maxWidth: 600, margin: "0 auto" }}>
-      <h1 style={{ fontSize: "1.8rem", fontWeight: "bold", marginBottom: "1rem" }}>
-        EmergenQ – Patient Check-In
+    <div
+      style={{
+        maxWidth: "600px",
+        margin: "2rem auto",
+        padding: "2rem",
+        background: "white",
+        borderRadius: "12px",
+        border: "1px solid #ddd",
+      }}
+    >
+      <h1 style={{ fontSize: "1.8rem", marginBottom: "1rem" }}>
+        Patient Check-In
       </h1>
 
-      <p style={{ marginBottom: "1.5rem" }}>
-        Please enter your information to join the ER queue.
-      </p>
+      <form onSubmit={handleSubmit}>
+        {/* NAME */}
+        <label style={{ display: "block", marginBottom: "0.5rem" }}>
+          Name:
+        </label>
+        <input
+          name="name"
+          required
+          placeholder="Your full name"
+          style={{
+            width: "100%",
+            padding: "0.5rem",
+            borderRadius: "6px",
+            border: "1px solid #ccc",
+            marginBottom: "1rem",
+          }}
+        />
 
-      <form style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        
-        {/* Name */}
-        <div>
-          <label>Your Name</label>
-          <input
-            type="text"
-            placeholder="John Doe"
-            style={{
-              width: "100%",
-              padding: "0.5rem",
-              borderRadius: "6px",
-              border: "1px solid #ccc",
-            }}
-          />
-        </div>
+        {/* SYMPTOMS */}
+        <label style={{ display: "block", marginBottom: "0.5rem" }}>
+          Symptoms:
+        </label>
+        <textarea
+          name="symptoms"
+          required
+          placeholder="Describe your symptoms"
+          style={{
+            width: "100%",
+            height: "90px",
+            padding: "0.5rem",
+            borderRadius: "6px",
+            border: "1px solid #ccc",
+            marginBottom: "1rem",
+          }}
+        />
 
-        {/* Symptoms */}
-        <div>
-          <label>Your Symptoms</label>
-          <textarea
-            placeholder="Describe what brings you in..."
-            rows={4}
-            style={{
-              width: "100%",
-              padding: "0.5rem",
-              borderRadius: "6px",
-              border: "1px solid #ccc",
-            }}
-          />
-        </div>
+        {/* MEDICAL HISTORY */}
+        <label style={{ display: "block", marginBottom: "0.5rem" }}>
+          Medical History:
+        </label>
+        <textarea
+          name="history"
+          placeholder="List any relevant medical history"
+          style={{
+            width: "100%",
+            height: "90px",
+            padding: "0.5rem",
+            borderRadius: "6px",
+            border: "1px solid #ccc",
+            marginBottom: "1rem",
+          }}
+        />
 
-        {/* Medical History */}
-        <div>
-          <label>Medical History</label>
-          <textarea
-            placeholder="Past conditions, surgeries, allergies..."
-            rows={4}
-            style={{
-              width: "100%",
-              padding: "0.5rem",
-              borderRadius: "6px",
-              border: "1px solid #ccc",
-            }}
-          />
-        </div>
+        {/* LANGUAGE */}
+        <label style={{ display: "block", marginBottom: "0.5rem" }}>
+          Preferred Language:
+        </label>
+        <select
+          name="language"
+          defaultValue="English"
+          style={{
+            width: "100%",
+            padding: "0.5rem",
+            borderRadius: "6px",
+            border: "1px solid #ccc",
+            marginBottom: "1rem",
+          }}
+        >
+          {LANGUAGES.map((lang) => (
+            <option key={lang}>{lang}</option>
+          ))}
+        </select>
 
-        {/* Language */}
-        <div>
-          <label>Preferred Language</label>
-          <select
-				defaultValue="English"
-				style={{
-					width: "100%",
-					padding: "0.5rem",
-					borderRadius: "6px",
-					border: "1px solid #ccc",
-				}}
-				>
-				{LANGUAGES.map((lang) => (
-					<option key={lang}>{lang}</option>
-				))}
-			</select>
-        </div>
-
-        {/* Submit */}
+        {/* SUBMIT BUTTON */}
         <button
           type="submit"
           style={{
-            backgroundColor: "#0070f3",
-            color: "white",
+            width: "100%",
             padding: "0.75rem",
-            borderRadius: "6px",
+            background: "#0070f3",
+            color: "white",
             border: "none",
+            borderRadius: "6px",
             cursor: "pointer",
             fontSize: "1rem",
-            fontWeight: "bold",
           }}
         >
-          Join Queue
+          Submit
         </button>
       </form>
+
+      {/* SUCCESS MESSAGE */}
+      {submitted && (
+        <p
+          style={{
+            marginTop: "1.5rem",
+            padding: "1rem",
+            background: "#e8ffe8",
+            border: "1px solid #9fdb9f",
+            color: "#1a7f1a",
+            borderRadius: "6px",
+            fontSize: "1rem",
+          }}
+        >
+          ✔️ Checked in! Your position in the queue is{" "}
+          <strong>#{position}</strong>.
+        </p>
+      )}
     </div>
   );
 }
