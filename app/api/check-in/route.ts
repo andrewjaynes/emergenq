@@ -1,30 +1,25 @@
-import { NextResponse } from "next/server";
+// app/api/check-in/route.ts
 
-let queue: any[] = []; // temporary in-memory queue
+let queue: any[] = [];
 
-export async function POST(request: Request) {
-  const data = await request.json();
+export async function POST(req: Request) {
+  const body = await req.json();
 
-  // Add a timestamp + queue position
-  const entry = {
-	id: Date.now(), // simple unique ID
-	name: data.name,
-	symptoms: data.symptoms,
-	history: data.history,
-	language: data.language,
-	checkedInAt: new Date().toISOString(),
-	position: queue.length + 1,
+  const patient = {
+    id: Date.now(),
+    ...body,
+    checkedInAt: new Date().toISOString(),
+    position: queue.length + 1,
   };
 
-  queue.push(entry);
+  queue.push(patient);
 
-  return NextResponse.json({
-	success: true,
-	queuePosition: entry.position,
+  return Response.json({
+    message: "Checked in!",
+    queuePosition: patient.position,
   });
 }
 
-// TEMP: allow viewing the queue in the browser
 export async function GET() {
-  return NextResponse.json(queue);
+  return Response.json(queue);
 }
