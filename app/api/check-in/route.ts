@@ -7,20 +7,20 @@ export async function POST(request: Request) {
 
   // Add a timestamp + queue position
   const entry = {
-    id: Date.now(), // simple unique ID
-    name: data.name,
-    symptoms: data.symptoms,
-    history: data.history,
-    language: data.language,
-    checkedInAt: new Date().toISOString(),
-    position: queue.length + 1,
+	id: Date.now(), // simple unique ID
+	name: data.name,
+	symptoms: data.symptoms,
+	history: data.history,
+	language: data.language,
+	checkedInAt: new Date().toISOString(),
+	position: queue.length + 1,
   };
 
   queue.push(entry);
 
   return NextResponse.json({
-    success: true,
-    queuePosition: entry.position,
+	success: true,
+	queuePosition: entry.position,
   });
 }
 
