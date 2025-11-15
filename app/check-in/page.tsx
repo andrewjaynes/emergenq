@@ -93,19 +93,18 @@ export default function CheckInPage() {
         <div>
           <label>Preferred Language</label>
           <select
-            style={{
-              width: "100%",
-              padding: "0.5rem",
-              borderRadius: "6px",
-              border: "1px solid #ccc",
-            }}
-          >
-            {LANGUAGES.map((lang) => (
-              <option key={lang} selected={lang === "English"}>
-  {lang}
-</option>
-            ))}
-          </select>
+				defaultValue="English"
+				style={{
+					width: "100%",
+					padding: "0.5rem",
+					borderRadius: "6px",
+					border: "1px solid #ccc",
+				}}
+				>
+				{LANGUAGES.map((lang) => (
+					<option key={lang}>{lang}</option>
+				))}
+			</select>
         </div>
 
         {/* Submit */}
