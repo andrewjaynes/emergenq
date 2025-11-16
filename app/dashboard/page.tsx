@@ -53,7 +53,7 @@ export default function DashboardPage() {
         EmergenQ – Live ER Queue
       </h1>
       <p style={{ marginBottom: "1.5rem", color: "#555" }}>
-        This screen is meant to be projected in the ER waiting room.
+        This screen is meant to be visible to the doctors in the ER waiting room.
       </p>
 
       <table
