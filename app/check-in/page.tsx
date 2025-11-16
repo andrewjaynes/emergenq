@@ -72,8 +72,7 @@ export default function CheckInPage() {
         EmergenQ – Patient Check-In
       </h1>
       <p style={{ marginBottom: "1.5rem", color: "#555" }}>
-        Enter your information to get a real-time estimate of your place in the ER
-        queue.
+        {/** removed subheading from right here */}
       </p>
 
       <form onSubmit={handleSubmit}>
